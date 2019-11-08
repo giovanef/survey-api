@@ -16,3 +16,9 @@ $router->get('/', function () {
         ['message' => 'Survey API', 'status' => 'Connected']
     );
 });
+
+$router->get('/pools', 'PoolsController@index');
+$router->post('/pools', 'PoolsController@store');
+$router->get('/pools/{id}', 'PoolsController@show');
+$router->get('/pools/{id}/stats', 'PoolsController@stats');
+$router->post('/pools/{id}/vote', 'PoolsController@vote');
