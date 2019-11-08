@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        factory(App\Pool::class, 10)->create()->each(function ($pool) {
+            $options = factory(App\Option::class, 4)->make();
+            $pool->options()->saveMany($options);
+        });
     }
 }
