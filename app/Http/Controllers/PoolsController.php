@@ -16,28 +16,49 @@ class PoolsController extends Controller
 
     public function show($id)
     {
-		$pool = Pool::find($id);
+		$pool = Pool::find($id, ['id', 'description', 'views']);
 
         if (!$pool) {
 			return response()->json([
 				'message' => 'Registro não encontrado.',
 			], 404);
-		}
+        }
 
-		return response()->json($pool);
+        try {
+            $pool->views = $pool->views + 1;
+            $pool->save();
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+
+        $response = [
+            'id' => $pool->id,
+            'description' => $pool->description,
+            'options' => $pool->options()->get(['id', 'description']),
+        ];
+
+		return response()->json($response);
     }
 
     public function stats($id)
     {
-        $pool = Pool::find($id);
+        $pool = Pool::find($id, ['id', 'views']);
 
         if (!$pool) {
 			return response()->json([
 				'message' => 'Registro não encontrado.',
 			], 404);
-		}
+        }
 
-		return response()->json($pool);
+        $response = [
+            'views' => $pool->views,
+            'votes' => $pool->options()->get(['id', 'votes']),
+        ];
+
+		return response()->json($response);
     }
 
     public function store(Request $request)
@@ -97,6 +118,14 @@ class PoolsController extends Controller
         if (!$request->has('id') || !$request->filled('id')) {
             return response()->json([
 				'message' => 'O campo "id" é obrigatório.',
+			], 400);
+        }
+
+        $pool = Pool::find($id);
+
+        if (!$pool->options->contains($request->input('id'))) {
+            return response()->json([
+				'message' => 'Esta opção não pertence a enquete selecionada.',
 			], 400);
         }
 
