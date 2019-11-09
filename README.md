@@ -68,12 +68,12 @@ Cria uma enquente.
 Exemplo de corpo da requisição:
 ```
 {
-	"description": "Description of the pool",
-	"options": [
-		"Description of option 1",
-		"Description of option 2",
-		"Description of option 3"
-	]
+  "description": "Description of the pool",
+  "options": [
+    "Description of option 1",
+    "Description of option 2",
+    "Description of option 3"
+  ]
 }
 ```
 
@@ -85,6 +85,6 @@ Registra o voto em uma opção da enquente com o ```:id``` informado no endpoint
 Exemplo de corpo da requisição:
 ```
 {
-	"id": 6
+  "id": 6
 }
 ```
