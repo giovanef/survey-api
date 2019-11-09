@@ -29,21 +29,34 @@ class PoolTest extends TestCase
         $this->assertArrayHasKey('votes', $responseData);
     }
 
-    // public function testCanCreatePool()
-    // {
-    //     $data = [
-    //         'description' => 'Test description of the pool',
-    //         'options' => [
-    //             'Test description of option 1',
-    //             'Test description of option 2',
-    //             'Test description of option 3',
-    //         ],
-    //     ];
+    public function testCanCreatePool()
+    {
+        $data = [
+            'description' => 'Test description of the pool',
+            'options' => [
+                'Test description of option 1',
+                'Test description of option 2',
+                'Test description of option 3',
+            ],
+        ];
 
-    //     $response = $this->call('POST', '/pools', $data);
-    //     $responseData = json_decode($response->content(), true);
+        $response = $this->call('POST', '/pools', $data);
+        $responseData = json_decode($response->content(), true);
 
-    //     $this->assertEquals(201, $response->status());
-    //     $this->assertArrayHasKey('id', $responseData);
-    // }
+        $this->assertEquals(201, $response->status());
+        $this->assertArrayHasKey('id', $responseData);
+    }
+
+    public function testCanVotePool()
+    {
+        $data = [
+            'id' => 1
+        ];
+
+        $response = $this->call('POST', '/pools/1/vote', $data);
+        $responseData = json_decode($response->content(), true);
+
+        $this->assertEquals(201, $response->status());
+        $this->assertArrayHasKey('id', $responseData);
+    }
 }
