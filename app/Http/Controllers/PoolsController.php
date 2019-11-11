@@ -78,7 +78,7 @@ class PoolsController extends Controller
 			], 400);
         }
 
-        if (!$request->has('options') || !$request->filled('options')) {
+        if (!$request->has('options') || !$request->filled('options') || count($request->input('options')) == 0) {
             return response()->json([
 				'message' => 'O campo "options" é obrigatório.',
 			], 400);
