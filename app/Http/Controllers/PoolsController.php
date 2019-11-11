@@ -45,7 +45,7 @@ class PoolsController extends Controller
 
     public function stats($id)
     {
-        $pool = Pool::find($id, ['id', 'views']);
+        $pool = Pool::find($id, ['id', 'description', 'views']);
 
         if (!$pool) {
 			return response()->json([
@@ -54,8 +54,9 @@ class PoolsController extends Controller
         }
 
         $response = [
+            'description' => $pool->description,
             'views' => $pool->views,
-            'votes' => $pool->options()->get(['id', 'votes']),
+            'votes' => $pool->options()->get(['id', 'description', 'votes']),
         ];
 
 		return response()->json($response);
@@ -77,7 +78,7 @@ class PoolsController extends Controller
 			], 400);
         }
 
-        if (!$request->has('options') || !$request->filled('options')) {
+        if (!$request->has('options') || !$request->filled('options') || count($request->input('options')) == 0) {
             return response()->json([
 				'message' => 'O campo "options" é obrigatório.',
 			], 400);
